@@ -18,7 +18,7 @@ git status
     2. 只加某個檔案
 
         ```bash
-        git add path/to/file
+        git add <file_name>
         ```
 
 4. 建立提交（commit）

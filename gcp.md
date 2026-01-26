@@ -1,4 +1,4 @@
-1. 啟用 IAP & API:
+1. 啟用 IAP API:
     1. 在 Google Cloud 控制台 導航至 Security (安全) > Identity-Aware Proxy。
     2. 確保已啟用 Cloud IAP API。
 2. 設定 IAM 權限:
@@ -14,7 +14,7 @@
 
 ## IAM & ADMIN
 1. Compute OS Login (roles/compute.osLogin)：基本登入權限
-2. Service Account User (roles/iam.serviceAccountUser)：非常重要。因為 VM 通常會掛載一個服務帳號，您必須有權限「使用」該帳號才能透過 OS Login 登入。
+2. Service Account User (roles/iam.serviceAccountUser)：因為 VM 通常會掛載一個服務帳號，您必須有權限「使用」該帳號才能透過 OS Login 登入。
 3. IAP-secured Tunnel User (roles/iap.tunnelInstances.accessViaIAP)：如果您是在沒有外部 IP 的環境下連線，則必須具備此權限。
 
 
