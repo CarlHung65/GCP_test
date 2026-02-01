@@ -2,8 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import pandas as pd
-
-
+import googlemaps
 
 def crawler_nightmarket():
     """抓取夜市的wiki網址，回傳網頁文字"""
@@ -72,13 +71,36 @@ def map_to_df(citys, nightmarkets):
     })
     return df
 
+def get_location(df):
+    """把有city和nightmarket_name的df新增location"""
+    gmaps = googlemaps.Client(key="AIzaSyD3_9x9JK7SZWIgNYP0izWScv6JT3otE2I")
+    full_name = df["city"]+df["nightmarket_name"]
+    lats = []
+    lngs = []
+    for name in full_name:
+        gm = gmaps.geocode(name)
+        lat = gm[0]['geometry']['location']['lat']
+        lng = gm[0]['geometry']['location']['lng']
+        lats.append(lat)
+        lngs.append(lng)
+    df = pd.DataFrame({
+    "city" : df["city"],
+    "nightmarket_name" : df["nightmarket_name"],
+    "latitude": lats,
+    "longitude": lngs,
+    })
+    return df
+
+
+
 def main():
     soup = crawler_nightmarket()
     citys = crawler_city(soup)
     nightmarkets = crawler_nightmarket_name(soup)
     df = map_to_df(citys, nightmarkets)
-    print(df)
-
+    df_2 = get_location(df)
+    print(df_2)
+    
 
 if __name__ == ("__main__"):
     main()
