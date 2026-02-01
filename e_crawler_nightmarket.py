@@ -73,21 +73,25 @@ def map_to_df(citys, nightmarkets):
 
 def get_location(df):
     """把有city和nightmarket_name的df新增location"""
-    gmaps = googlemaps.Client(key="AIzaSyD3_9x9JK7SZWIgNYP0izWScv6JT3otE2I")
+    gmaps = googlemaps.Client(key="GOOGLE_MAPS_API_KEY")
     full_name = df["city"]+df["nightmarket_name"]
     lats = []
     lngs = []
+    place_id = []
     for name in full_name:
         gm = gmaps.geocode(name)
         lat = gm[0]['geometry']['location']['lat']
         lng = gm[0]['geometry']['location']['lng']
+        p_id = gm[0]["place_id"]
         lats.append(lat)
         lngs.append(lng)
+        place_id.append(p_id)
     df = pd.DataFrame({
     "city" : df["city"],
     "nightmarket_name" : df["nightmarket_name"],
     "latitude": lats,
     "longitude": lngs,
+    "place_id": place_id,
     })
     return df
 
