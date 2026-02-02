@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import time
 import pandas as pd
 import googlemaps
+import os
+from dotenv import load_dotenv
 
 def crawler_nightmarket():
     """抓取夜市的wiki網址，回傳網頁文字"""
@@ -73,7 +75,12 @@ def map_to_df(citys, nightmarkets):
 
 def get_location(df):
     """把有city和nightmarket_name的df新增location"""
-    gmaps = googlemaps.Client(key="GOOGLE_MAPS_API_KEY")
+    # 先用dotenv的函式抓取api key 預設會抓當前目錄，若在其他目錄則要給予相對路徑
+    # 不會覆蓋已存在的環境變數。
+    load_dotenv()
+    # 用os套件的getenv來獲取api key
+    GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
+    gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
     full_name = df["city"]+df["nightmarket_name"]
     lats = []
     lngs = []
