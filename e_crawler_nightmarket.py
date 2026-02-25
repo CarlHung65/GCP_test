@@ -140,6 +140,7 @@ def main():
     citys = crawler_city(soup)
     nightmarkets = crawler_nightmarket_name(soup)
     df = map_to_df(citys, nightmarkets)
+    df.to_csv('nightmarket_name.csv', index=False, encoding='utf-8-sig')
     df_2 = get_location(df)
     df_3 = get_oh_url(df_2)
     df_3.to_csv('nightmarket.csv', index=False, encoding='utf-8-sig')
