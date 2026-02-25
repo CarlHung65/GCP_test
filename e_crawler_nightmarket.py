@@ -102,7 +102,38 @@ def get_location(df):
     })
     return df
 
+def get_oh_url(df):
 
+    pids = df["place_id"]
+    load_dotenv()
+    GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
+    gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
+    
+    wts = []
+    urls = []
+    for pid in pids:
+        res = gmaps.place(
+            place_id=pid,
+            fields=["opening_hours", "url"]
+            )
+        result = res.get("result", {})
+
+        wt = result.get("opening_hours", {}).get("weekday_text",[])
+        url = result.get("url")
+
+        wts.append(wt)
+        urls.append(url)
+
+    df = pd.DataFrame({
+    "city" : df["city"],
+    "nightmarket_name" : df["nightmarket_name"],
+    "latitude": df["latitude"],
+    "longitude": df["longitude"],
+    "place_id": df["place_id"],
+    "wt": wts,
+    "url": urls,
+    })
+    return df
 
 def main():
     soup = crawler_nightmarket()
@@ -110,8 +141,8 @@ def main():
     nightmarkets = crawler_nightmarket_name(soup)
     df = map_to_df(citys, nightmarkets)
     df_2 = get_location(df)
-    print(df_2)
-    
+    df_3 = get_oh_url(df_2)
+    df_3.to_csv('nightmarket.csv', index=False, encoding='utf-8-sig')
 
 if __name__ == ("__main__"):
     main()
