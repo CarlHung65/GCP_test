@@ -12,7 +12,7 @@ def crawler_nightmarket():
     url = "https://zh.wikipedia.org/zh-tw/%E8%87%BA%E7%81%A3%E5%A4%9C%E5%B8%82%E5%88%97%E8%A1%A8#"
     headers = {
     "User-Agent": "WikiDataPipelineBot/1.0"
-    "(data engineering practice on Wikipedia; contact: eszaqw6207@gmail.com)"
+    "(data engineering practice on Wikipedia; contact: eszaqw@gmail.com)"
     }
     max_retries = 3 # 設定重抓網址的上限次數
     retries = 0
